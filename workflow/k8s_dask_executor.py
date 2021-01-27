@@ -51,7 +51,7 @@ flow.run_config = KubernetesRun(
 
 # Create Dask Executor
 def make_cluster(n_workers, image):
-    """Start a fargate cluster using the same image as the flow run"""
+    """Start a cluster using the same image as the flow run"""
     from dask_kubernetes import KubeCluster, make_pod_spec
 
     pod_spec = make_pod_spec(
