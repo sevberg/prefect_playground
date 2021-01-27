@@ -43,11 +43,13 @@ flow.storage = Docker(
     ],
 )
 
+# Create run config
 flow.run_config = KubernetesRun(
     cpu_request=2, memory_request="2G", env={"AWS_DEFAULT_REGION": "eu-central-1"}
 )
 
 
+# Create Dask Executor
 def make_cluster(n_workers, image):
     """Start a fargate cluster using the same image as the flow run"""
     from dask_kubernetes import KubeCluster, make_pod_spec
@@ -68,4 +70,5 @@ flow.executor = DaskExecutor(
     cluster_kwargs={"n_workers": 10, "image": flow.storage.name},
 )
 
+# Register flow
 flow.register(project_name="prefect_playground", labels=["dev"])
