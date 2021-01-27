@@ -1,6 +1,7 @@
 # Python
 venv
 __pycache__
+*.egg-info
 
 # Development
 settings.json
