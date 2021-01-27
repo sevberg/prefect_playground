@@ -1,11 +1,7 @@
-import prefect
 from prefect.storage import Docker
 from prefect.run_configs import KubernetesRun
 from prefect.executors.dask import DaskExecutor
 from os import path
-from datetime import datetime
-
-# from dask_cloudprovider.aws import FargateCluster
 
 import flow_generator
 
@@ -25,7 +21,6 @@ flow.storage = Docker(
     ],
     registry_url="public.ecr.aws/m5p2l3e5/",
     image_name="prefect_playground",
-    # image_tag=datetime.now().strftime("%Y%m%d_%H%M%S"),  # Unique tag avoids AWS caching
     image_tag="latest",
     files={
         path.join(
@@ -58,9 +53,6 @@ def make_cluster(n_workers, image):
         memory_request="1900M",
         cpu_limit=0.5,
         cpu_request=0.5,
-        # env={
-        #     "EXTRA_PIP_PACKAGES": "fastparquet git+https://github.com/dask/distributed"
-        # },
     )
 
     return KubeCluster(pod_spec, n_workers=n_workers)
@@ -72,4 +64,3 @@ flow.executor = DaskExecutor(
 )
 
 flow.register(project_name="prefect_playground", labels=["dev"])
-# flow.run()
