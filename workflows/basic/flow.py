@@ -8,11 +8,25 @@ from prefect import Flow, unmapped, Parameter
 from prefectplayground.tasks import generate_list
 
 
-def BasicFlow(generate_list_args={}):
+def BasicFlow():
     with Flow(
         name="basic_flow",
     ) as flow:
-        members = generate_list(**generate_list_args)
+
+        # Simple list generation task
+        generate_list_n_members = Parameter("generate_list_n_members", default=100)
+        generate_list_min_value = Parameter("generate_list_min_value", default=1000)
+        generate_list_max_value = Parameter("generate_list_max_value", default=2000)
+        generate_list_cycles = Parameter("generate_list_cycles", default=1)
+        generate_list_seed = Parameter("generate_list_seed", default=None)
+
+        members = generate_list(
+            n_members=generate_list_n_members,
+            min_value=generate_list_min_value,
+            max_value=generate_list_max_value,
+            cycles=generate_list_cycles,
+            seed=generate_list_seed,
+        )
 
         print(members)
 
