@@ -1,1 +1,5 @@
 numpy
+
+dask_kubernetes==0.11.0
+dask==2020.12.0
+distributed==2021.01.0
