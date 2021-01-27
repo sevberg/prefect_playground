@@ -13,7 +13,7 @@ import flow_generator
 flow = flow_generator.BasicFlow()
 
 # Build and push image
-module_dir = path.dirname(path.dirname(path.dirname(path.abspath(__file__))))
+module_dir = path.dirname(path.dirname(path.abspath(__file__)))
 
 
 flow.storage = Docker(
@@ -22,7 +22,6 @@ flow.storage = Docker(
         "dask_kubernetes==0.11.0",
         "dask==2020.12.0",
         "distributed==2021.01.0",
-        # "dask-cloudprovider[aws]",
     ],
     registry_url="public.ecr.aws/m5p2l3e5/",
     image_name="prefect_playground",
