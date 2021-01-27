@@ -5,7 +5,7 @@ from prefect import Flow, unmapped, Parameter
 # from prefect.environments.storage import Docker
 # from prefect.tasks.aws.secrets_manager import AWSSecretsManager
 
-from prefectplayground.tasks import generate_list
+from prefectplayground.tasks import add_matrix, generate_list
 
 
 def BasicFlow():
@@ -15,10 +15,10 @@ def BasicFlow():
 
         # Simple list generation task
         generate_list_n_members = Parameter("generate_list_n_members", default=100)
-        generate_list_min_value = Parameter("generate_list_min_value", default=1000)
-        generate_list_max_value = Parameter("generate_list_max_value", default=2000)
+        generate_list_min_value = Parameter("generate_list_min_value", default=20)
+        generate_list_max_value = Parameter("generate_list_max_value", default=30)
         generate_list_cycles = Parameter("generate_list_cycles", default=1)
-        generate_list_seed = Parameter("generate_list_seed", default=None)
+        generate_list_seed = Parameter("generate_list_seed", default=0)
 
         members = generate_list(
             n_members=generate_list_n_members,
@@ -28,7 +28,15 @@ def BasicFlow():
             seed=generate_list_seed,
         )
 
-        print(members)
+        # Mapped task
+        add_matrix_size = Parameter("add_matrix_size", default=5000)
+        add_matrix_seed = Parameter("add_matrix_seed", default=1)
+
+        member_means = add_matrix.map(
+            cycles=members,
+            seed=unmapped(add_matrix_seed),
+            size=unmapped(add_matrix_size),
+        )
 
     return flow
 
