@@ -19,8 +19,8 @@ flow.storage = Docker(
         "dask==2020.12.0",
         "distributed==2021.01.0",
     ],
-    registry_url="public.ecr.aws/m5p2l3e5/",
-    image_name="prefect_playground",
+    registry_url="registry.hub.docker.com/",
+    image_name="sevberg/prefect_playground",
     image_tag="latest",
     files={
         path.join(
@@ -39,7 +39,7 @@ flow.storage = Docker(
 
 
 flow.run_config = KubernetesRun(
-    cpu_request=2, memory_request="2Gi", env={"AWS_DEFAULT_REGION": "eu-central-1"}
+    cpu_request=2, memory_request="2G", env={"AWS_DEFAULT_REGION": "eu-central-1"}
 )
 
 
@@ -60,7 +60,7 @@ def make_cluster(n_workers, image):
 
 flow.executor = DaskExecutor(
     cluster_class=make_cluster,
-    cluster_kwargs={"n_workers": 580, "image": flow.storage.name},
+    cluster_kwargs={"n_workers": 10, "image": flow.storage.name},
 )
 
 flow.register(project_name="prefect_playground", labels=["dev"])
