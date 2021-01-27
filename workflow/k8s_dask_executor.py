@@ -12,13 +12,17 @@ flow = flow_generator.BasicFlow()
 module_dir = path.dirname(path.dirname(path.abspath(__file__)))
 
 
+def get_requirements(*extras):
+    reqs = []
+    for line in open(path.join(module_dir, "requirements.txt")):
+        reqs.append(line[:-1])
+
+    reqs.extend(extras)
+    return reqs
+
+
 flow.storage = Docker(
-    python_dependencies=[
-        "numpy",
-        "dask_kubernetes==0.11.0",
-        "dask==2020.12.0",
-        "distributed==2021.01.0",
-    ],
+    python_dependencies=get_requirements(),
     registry_url="registry.hub.docker.com/",
     image_name="sevberg/prefect_playground",
     image_tag="latest",
@@ -34,9 +38,10 @@ flow.storage = Docker(
             module_dir, "prefectplayground"
         ): "/modules/prefect_playground/prefectplayground",
     },
-    extra_dockerfile_commands=["RUN pip install -e /modules/prefect_playground"],
+    extra_dockerfile_commands=[
+        "RUN pip install --no-deps -e /modules/prefect_playground"
+    ],
 )
-
 
 flow.run_config = KubernetesRun(
     cpu_request=2, memory_request="2G", env={"AWS_DEFAULT_REGION": "eu-central-1"}
