@@ -4,7 +4,7 @@ from prefect import Flow, unmapped, Parameter
 from prefectplayground.tasks import add_matrix, generate_list
 
 
-def BasicFlow():
+def BasicFlow() -> Flow:
     with Flow(
         name="basic_flow",
     ) as flow:
