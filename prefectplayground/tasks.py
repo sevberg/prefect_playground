@@ -22,3 +22,17 @@ def generate_list(
         output = np.random.choice(np.arange(min_value, max_value + 1), size=n_members)
 
     return output.tolist()
+
+
+@task(log_stdout=True)
+def add_matrix(size: int = 1e5, cycles: int = 1000, seed: int = None) -> float:
+    """Adds a randomly generated matrix of size `size` by `size` to itself `cycles` times. Then returns the mean of the matrix"""
+
+    if seed is not None:
+        np.random.seed(seed)
+
+    matrix = np.random.random(size=(size, size))
+    for _ in range(cycles):
+        matrix += matrix
+
+    return float(matrix.mean())
