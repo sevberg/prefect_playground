@@ -32,6 +32,7 @@ flow.storage = Docker(
             module_dir, "requirements.txt"
         ): "/modules/prefect_playground/requirements.txt",
         path.join(module_dir, "README.md"): "/modules/prefect_playground/README.md",
+        path.join(module_dir, "LICENSE"): "/modules/prefect_playground/LICENSE",
         path.join(module_dir, "setup.py"): "/modules/prefect_playground/setup.py",
         path.join(module_dir, ".version"): "/modules/prefect_playground/.version",
         path.join(
