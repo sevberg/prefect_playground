@@ -1,0 +1,5 @@
+black
+pylint
+pytest
+
+prefect>=0.14.5
